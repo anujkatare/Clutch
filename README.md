@@ -42,7 +42,7 @@ We use VS Code **Dev Containers** to automatically configure your workspace insi
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/YOUR_GITHUB_USERNAME/clutch.git](https://github.com/YOUR_GITHUB_USERNAME/clutch.git)
+    git clone [https://github.com/anujkatare/clutch.git](https://github.com/anujkatare/clutch.git)
     cd clutch
     ```
 2.  **Open in VS Code:**
