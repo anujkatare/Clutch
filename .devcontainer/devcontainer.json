@@ -1,0 +1,13 @@
+{
+    "name": "Clutch Dev Environment",
+    "dockerFile": "../Dockerfile",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools"
+            ]
+        }
+    },
+    "postCreateCommand": "g++ main.cpp Lexer.cpp -o clutch",
+    "remoteUser": "root"
+}
