@@ -1,86 +1,141 @@
-# ⚡ Clutch
+# ⚡ Clutch Programming Language
 
-> **Write fast. Execute faster. Built for developers who refuse to compromise on performance.**
-
-`Clutch` is an open-source, next-generation programming language engineered from the ground up to deliver blazing-fast native execution speeds with an incredibly clean, minimalist syntax. It offers a premium developer experience, bringing high-octane performance directly to your fingertips without the overhead of heavy virtual machines.
+Clutch is a lightweight, modular, and interpreted programming language built from scratch using **Modern C++ (C++17/20)**. Designed with clean Object-Oriented Programming (OOP) principles and a zero-memory-leak guarantee, Clutch compiles and evaluates source code through a transparent **4-Pillar Compiler Pipeline**.
 
 ---
 
-## 🎮 Why Clutch?
-
-*   **High-Octane Performance:** Compiled directly to run close to the metal with zero execution overhead.
-*   **Aesthetic & Minimal Syntax:** No unnecessary boilerplate. Write clean, readable code effortlessly.
-*   **Modern Core:** Built using standard C++ under the hood, ensuring top-tier speed, memory efficiency, and safety.
-*   **Developer-First Ecosystem:** Designed for seamless tooling, quick setups, and absolute control.
-
----
-
-## 🛠️ The Architecture (How it Works)
-
-Clutch compiles your source files directly into optimized executables. The compiler pipeline is broken down into modular steps, making it incredibly easy for open-source contributors to jump in:
-
-1.  **Lexer (Lexical Analyzer):** Breaks your raw code into readable tokens.
-2.  **Parser:** Analyzes the tokens and builds an Abstract Syntax Tree (AST) representing the program's logic.
-3.  **Code Generator:** Translates the AST directly into highly optimized target code for execution.
+## 🚀 Features (Current Version)
+* **Mathematical Expressions:** Full arithmetic evaluation with operator precedence (+, -, *, /).
+* **Variable Assignment:** Dynamic runtime memory allocation and symbol mapping (score = 100).
+* **Zero Memory Leaks:** Powered entirely by standard smart pointers (std::unique_ptr).
+* **Cross-Platform & Lightweight:** Zero external dependencies. Runs seamlessly on Windows, macOS, Linux, and Docker environments.
 
 ---
 
-## 🚀 Quick Start & Development Setup
+## 🛠️ Quick Start & Execution Guide
 
-To make contributing as painless as possible, the entire development environment is containerized. This means you do not need to struggle with installing complex C++ compilers, CMake, or dependencies locally on your machine. 
+Depending on your operating system and terminal, the syntax to execute compiled binaries differs slightly. Once you compile the compiler using g++, follow the instructions below for your specific terminal.
 
-### Prerequisites
-Make sure you have the following installed on your machine:
-*   [Git](https://git-scm.com/)
-*   [VS Code](https://code.visualstudio.com/)
-*   [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+### 1. Compilation Command (All Platforms)
+Open your terminal in the project root directory and run:
 
----
+g++ main.cpp Lexer.cpp Parser.cpp Evaluator.cpp -o clutch
 
-### Option A: The 1-Click Setup (Highly Recommended)
-We use VS Code **Dev Containers** to automatically configure your workspace inside Docker.
+*(Note: On Windows, this will automatically generate clutch.exe)*
 
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/anujkatare/clutch.git](https://github.com/anujkatare/clutch.git)
-    cd clutch
-    ```
-2.  **Open in VS Code:**
-    ```bash
-    code .
-    ```
-3.  **Reopen in Container:**
-    *   VS Code will automatically detect the configuration and show a pop-up in the bottom-right corner: *"Folder contains a Dev Container configuration. Reopen in Container."*
-    *   Click **Reopen in Container**.
-    *   *Alternatively:* Open the Command Palette (`Ctrl+Shift+P` on Windows/Linux or `Cmd+Shift+P` on Mac) and type: `Dev Containers: Reopen in Container`.
+### 2. Running a Script (test.clt) on Different Terminals
 
-VS Code will now download the exact compiler environment, install the C++ and CMake extensions automatically, and set up your environment inside Docker. **You are ready to code!**
+#### 🖥️ Git Bash / MINGW64 (Windows/Linux/macOS)
+In Bash-based terminals, you must use a forward slash ./ to execute a local binary:
 
----
+./clutch test.clt
 
-### Option B: Manual Docker Setup
-If you prefer using the terminal directly with Docker:
+#### ⚡ Windows PowerShell (Default VS Code Terminal)
+PowerShell requires a backslash .\ to invoke local executables for security reasons:
 
-1.  **Build the Docker Image:**
-    ```bash
-    docker build -t clutch-dev .
-    ```
-2.  **Run the Interactive Container:**
-    ```bash
-    docker run -it -v $(pwd):/workspace clutch-dev
-    ```
+.\clutch test.clt
+
+#### 🔲 Windows Command Prompt (CMD)
+In legacy Windows Command Prompt, you can invoke the executable directly without prefix slashes:
+
+clutch test.clt
+
+#### 🐳 Docker / Dev Container
+If you are using the integrated Dev Container, the binary is pre-configured for a Linux environment:
+
+./clutch test.clt
 
 ---
 
-### Option C: Bare Metal Setup (No Docker)
-If you prefer compiling directly on your host machine, ensure you have a modern compiler (**C++20** compatible) and **CMake** installed.
+## 🗺️ Roadmap & Future Features
 
-```bash
-# 1. Generate the build configuration
-cmake -B build
+Clutch is actively evolving! Here is our development roadmap for upcoming releases:
+- [ ] **Data Types:** Support for Floating-point numbers (float), Strings ("hello"), and Booleans (true/false).
+- [ ] **Built-in Keywords:** Implementing standard I/O commands like print() and input().
+- [ ] **Control Flow:** Adding conditional branching (if, else if, else) and relational operators (==, <, >).
+- [ ] **Loops:** Implementing while and for loop structures.
+- [ ] **Functions:** Supporting user-defined functions with parameters and return scopes.
+- [ ] **Error Recovery:** Enhanced syntax and line-number error reporting during parsing.
 
-# 2. Compile the project
-cmake --build build
+---
 
-# 3. Run the Clutch compiler binary
-./build/clutch
+## 📂 Project Architecture & File Breakdown
+
+This section details the purpose, programming language, and architectural role of every file within the compiler pipeline.
+
+### 🌳 Directory Layout
+Clutch/
+├── .devcontainer/        <-- Docker environment configuration for VS Code
+│   └── devcontainer.json
+├── .github/              <-- CI/CD Workflows for automated GitHub testing
+├── Dockerfile            <-- Container recipe for dependency-free setup
+├── Lexer.h               <-- C++ Header: Token definitions and lexical analysis class
+├── Lexer.cpp             <-- C++ Implementation: Stream scanning and character grouping
+├── AST.h                 <-- C++ Header: Polymorphic Abstract Syntax Tree node classes
+├── Parser.h              <-- C++ Header: Syntactic validation and tree-building class
+├── Parser.cpp            <-- C++ Implementation: Recursive descent parsing algorithms
+├── Evaluator.h           <-- C++ Header: Runtime memory state and symbol table
+├── Evaluator.cpp         <-- C++ Implementation: Tree-walking interpreter logic
+├── main.cpp              <-- C++ Implementation: CLI Entry point and pipeline orchestrator
+├── test.clt              <-- Custom Script: Sample Clutch code for testing
+└── README.md             <-- Markdown: This absolute documentation guide
+
+### 🔍 Detailed File Analysis
+
+#### 1. main.cpp (The Orchestrator)
+* **Language:** C++
+* **Purpose:** Acts as the Command Line Interface (CLI) entry point for the compiler. It handles file reading and passes data sequentially through the 4 core pillars: Source Code -> Lexer -> Parser -> Evaluator.
+
+#### 2. Lexer.h & Lexer.cpp (Phase 1: Tokenization)
+* **Language:** C++
+* **Purpose:** Converts raw text characters into meaningful language tokens (TokenType Enum and Token Struct) using cursor-based scanning (peek() and advance()).
+
+#### 3. AST.h (Phase 2: Data Modeling)
+* **Language:** C++
+* **Purpose:** Defines the structural hierarchy of the code using OOP Inheritance. Uses std::unique_ptr exclusively to model expression nodes (BinaryOpNode, NumberLiteralNode, etc.) with zero risk of memory leaks.
+
+#### 4. Parser.h & Parser.cpp (Phase 3: Syntactic Analysis)
+* **Language:** C++
+* **Purpose:** Analyzes tokens using the Recursive Descent Parsing technique to build a mathematically accurate syntax tree, validating expression precedence and correct assignment formatting.
+
+#### 5. Evaluator.h & Evaluator.cpp (Phase 4: Runtime Execution)
+* **Language:** C++
+* **Purpose:** Manages the system's runtime memory via a Symbol Table (std::unordered_map). It dynamically checks nodes, resolves values, handles runtime mathematics, and prints the final state.
+
+---
+
+## 🤝 Contributing & Developer Setup Guide
+
+We welcome open-source contributors! To set up your environment smoothly:
+
+### Method 1: Local Native Setup (Host Machine)
+Ensure you have a C++17/20 compatible compiler installed:
+* **Windows:** Install MinGW-w64.
+* **macOS:** Run xcode-select --install.
+* **Linux:** Run sudo apt-get install build-essential g++ git.
+
+### Method 2: Docker Dev Container Setup (Recommended!)
+1. Install Docker Desktop, VS Code, and the Dev Containers extension.
+2. Open the cloned project folder in VS Code, press F1, select Dev Containers: Reopen in Container.
+3. The environment will auto-build the Linux image and pre-compile the binary!
+
+### 💻 Contribution Coding Standards
+1. **Zero Memory Leaks:** Never use raw pointers with manual new or delete. Always use modern C++ smart pointers (std::unique_ptr).
+2. **Strict Encapsulation:** Class variables must remain private. Expose functionality only through explicit public mechanisms.
+3. **No Dead Code:** Remove commented-out lines and redundant header includes before committing.
+4. **Descriptive PRs:** Ensure your code compiles cleanly without warnings, add a .clt verification test script, and open a Pull Request!
+
+
+---
+
+## 🚀 Next Step for Contributors: Ready to Code?
+
+> ⚠️ **ATTENTION DEVELOPERS:** If you have successfully set up the environment on your local machine or via Docker Desktop, you are ready to make your first contribution! 
+
+Please navigate directly to the **Contribute.md** file in the root directory. Inside, you will find a crystal-clear, step-by-step workflow tracking exactly how to:
+1. Fork the repository and cut a clean feature branch.
+2. Edit the corresponding C++ sub-systems without creating redundant files.
+3. Test your code adjustments on different terminals using `test.clt`.
+4. Open a structured Pull Request matching the project's production OOP standards.
+
+Let's build the future of Clutch together! 🛠️

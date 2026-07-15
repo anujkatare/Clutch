@@ -2,9 +2,10 @@
 #include <fstream>
 #include <sstream>
 #include "Lexer.h"
+#include "Parser.h"
+#include "Evaluator.h"
 
 int main(int argc, char* argv[]) {
-    // 1. Check valid arguments (clutch <filename.clt>)
     if (argc < 2) {
         std::cout << "Error: No input file specified.\n";
         std::cout << "Usage: clutch <filename.clt>\n";
@@ -12,14 +13,11 @@ int main(int argc, char* argv[]) {
     }
 
     std::string filename = argv[1];
-
-    // 2. Validate .clt extension
     if (filename.length() < 4 || filename.substr(filename.length() - 4) != ".clt") {
-        std::cout << "Error: Invalid file extension. Clutch source files must end with '.clt'\n";
+        std::cout << "Error: Invalid file extension. Use '.clt'\n";
         return 1;
     }
 
-    // 3. Read the .clt source file
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cout << "Error: Could not open file '" << filename << "'\n";
@@ -30,17 +28,25 @@ int main(int argc, char* argv[]) {
     buffer << file.rdbuf();
     std::string sourceCode = buffer.str();
 
-    std::cout << "Clutch Compiler: Running '" << filename << "'...\n\n";
+    std::cout << "⚡ Clutch Compiler: Running '" << filename << "'...\n";
 
-    // 4. Tokenize the code using our C++ Lexer
-    Lexer lexer(sourceCode);
-    std::vector<Token> tokens = lexer.tokenize();
+    try {
+        // 1. Tokenization Phase
+        Lexer lexer(sourceCode);
+        std::vector<Token> tokens = lexer.tokenize();
 
-    // Temporarily print tokens for debugging
-    std::cout << "--- [Tokens Found] ---\n";
-    for (const auto& token : tokens) {
-        if (token.type == TokenType::EOF_TOKEN) break;
-        std::cout << "Value: '" << token.value << "'\n";
+        // 2. Syntactic Parsing Phase
+        Parser parser(tokens);
+        std::vector<std::unique_ptr<ASTNode>> ast = parser.parse();
+
+        // 3. Execution Runtime Phase
+        Evaluator evaluator;
+        evaluator.evaluate(ast);
+        evaluator.printEnvironment();
+
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return 1;
     }
 
     return 0;
